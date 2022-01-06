@@ -19,4 +19,8 @@ public interface AccountService {
 
     // 添加账号
     void add(Account account);
+
+    // 查询账号及其关联角色或菜单
+    Account search(int id);
+
 }

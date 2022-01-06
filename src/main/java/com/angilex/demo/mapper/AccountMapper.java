@@ -1,6 +1,8 @@
 package com.angilex.demo.mapper;
 
 import com.angilex.demo.entity.Account;
+import com.angilex.demo.entity.Menu;
+import com.angilex.demo.entity.Role;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -37,4 +39,13 @@ public interface AccountMapper {
 
     // 通过角色id获取它对应的角色菜单id
     List<Integer> getMenuList(Integer roleId);
+
+    // 查询账户
+    List<Account> search(int id);
+
+    // 查询关联角色
+    List<Role> getRelatedRole(int id);
+
+    // 查询关联菜单
+    List<Menu> getRelatedMenu(int id);
 }

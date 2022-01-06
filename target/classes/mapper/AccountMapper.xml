@@ -10,6 +10,24 @@
         <result column="is_enabled" property="isEnabled" jdbcType="TINYINT"/>
         <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP"/>
         <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP"/>
+        <collection property="roles" ofType="com.angilex.demo.entity.Role">
+            <id column="id" property="id" jdbcType="INTEGER"/>
+            <result column="role_name" property="roleName" jdbcType="VARCHAR"/>
+            <result column="role_code" property="roleCode" jdbcType="VARCHAR"/>
+            <result column="is_enabled" property="isEnabled" jdbcType="TINYINT"/>
+            <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP"/>
+            <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP"/>
+        </collection>
+        <collection property="menus" ofType="com.angilex.demo.entity.Menu">
+            <id column="id" property="id" jdbcType="INTEGER"/>
+            <result column="menu_code" property="menuCode" jdbcType="VARCHAR"/>
+            <result column="menu_name" property="menuName" jdbcType="VARCHAR"/>
+            <result column="menu_type" property="menuType" jdbcType="TINYINT"/>
+            <result column="url" property="url" jdbcType="VARCHAR"/>
+            <result column="parent_id" property="parentId" jdbcType="INTEGER"/>
+            <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP"/>
+            <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP"/>
+        </collection>
     </resultMap>
 
     <sql id="Base_Column_List" >
@@ -20,6 +38,73 @@
         SELECT <include refid="Base_Column_List"/>
         FROM pf_account
     </select>
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO pf_account
+        (<include refid="Base_Column_List"/>)
+        VALUES (#{id}, #{userName}, #{name}, #{password}, 1, NOW(), NOW())
+    </insert>
+
+    <insert id="addAccountRole">
+        INSERT INTO pf_account_role
+        (account_id, role_id, gmt_create, gmt_modified)
+        VALUES
+        <foreach collection="roles" item="role" separator=",">
+            (#{id}, #{role.id}, NOW(), NOW())
+        </foreach>
+    </insert>
+
+    <select id="getMenuList" resultType="Integer">
+        SELECT menu_id
+        FROM pf_role_menu
+        WHERE role_id = #{roleId}
+    </select>
+
+    <insert id="bindRoleMenu" parameterType="com.angilex.demo.entity.Account">
+        INSERT INTO pf_account_menu (account_id, menu_id, gmt_create, gmt_modified)
+        VALUES (#{account.id}, #{menuId}, NOW(), NOW())
+    </insert>
+
+    <insert id="addAccountMenu" parameterType="com.angilex.demo.entity.Account">
+        INSERT INTO pf_account_menu (account_id, menu_id, gmt_create, gmt_modified)
+        VALUES
+        <foreach collection="menus" item="menu" separator=",">
+            (#{id}, #{menu.id}, NOW(), NOW())
+        </foreach>
+    </insert>
+
+    <select id="search" resultType="com.angilex.demo.entity.Account">
+        SELECT <include refid="Base_Column_List"/>
+        FROM pf_account
+        WHERE id = #{id}
+    </select>
+
+    <select id="getRelatedRole" resultType="com.angilex.demo.entity.Role">
+        SELECT
+            r.id,
+            r.role_name,
+            r.role_code,
+            r.is_enabled,
+            r.gmt_create,
+            r.gmt_modified
+        FROM pf_role r
+        WHERE r.id IN (SELECT ar.role_id FROM pf_account_role ar WHERE ar.account_id = #{id})
+    </select>
+
+    <select id="getRelatedMenu" resultType="com.angilex.demo.entity.Menu">
+        SELECT
+            m.id,
+            m.menu_code,
+            m.menu_name,
+            m.menu_type,
+            m.url,
+            m.parent_id,
+            m.gmt_create,
+            m.gmt_modified
+        FROM pf_menu m
+        WHERE m.id IN (SELECT am.menu_id FROM pf_account_menu am WHERE am.account_id = #{id})
+    </select>
+
 
     <update id="invalidate">
         UPDATE pf_account

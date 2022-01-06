@@ -34,6 +34,16 @@ public class AccountController {
         accountService.add(account);
     }
 
+    /**
+     * 查询账号
+     * @param id
+     * @return
+     */
+    @GetMapping("search/{id}")
+    public Account search(@PathVariable int id) {
+        return accountService.search(id);
+    }
+
 
     /**
      * 停用账号

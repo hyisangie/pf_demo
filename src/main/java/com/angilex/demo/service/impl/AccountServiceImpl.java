@@ -54,6 +54,23 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
+    @Override
+    public Account search(int id) {
+        // 查询账号
+        List<Account> accounts = accountMapper.search(id);
+        Account account = null;
+        if (accounts.size() > 0) {
+            account = accounts.get(0);
+            // 查询关联角色
+            List<Role> relatedRole = accountMapper.getRelatedRole(id);
+            System.out.println(relatedRole);
+            account.setRoles(relatedRole);
+            // 查询关联菜单
+            account.setMenus(accountMapper.getRelatedMenu(id));
+        }
+        return account;
+    }
+
     private void addAccountMenu(Account account) {
         // 添加账户和菜单的关系
         accountMapper.addAccountMenu(account);

@@ -73,6 +73,39 @@
         </foreach>
     </insert>
 
+    <select id="search" resultType="com.angilex.demo.entity.Account">
+        SELECT <include refid="Base_Column_List"/>
+        FROM pf_account
+        WHERE id = #{id}
+    </select>
+
+    <select id="getRelatedRole" resultType="com.angilex.demo.entity.Role">
+        SELECT
+            r.id,
+            r.role_name,
+            r.role_code,
+            r.is_enabled,
+            r.gmt_create,
+            r.gmt_modified
+        FROM pf_role r
+        WHERE r.id IN (SELECT ar.role_id FROM pf_account_role ar WHERE ar.account_id = #{id})
+    </select>
+
+    <select id="getRelatedMenu" resultType="com.angilex.demo.entity.Menu">
+        SELECT
+            m.id,
+            m.menu_code,
+            m.menu_name,
+            m.menu_type,
+            m.url,
+            m.parent_id,
+            m.gmt_create,
+            m.gmt_modified
+        FROM pf_menu m
+        WHERE m.id IN (SELECT am.menu_id FROM pf_account_menu am WHERE am.account_id = #{id})
+    </select>
+
+
     <update id="invalidate">
         UPDATE pf_account
         SET is_enabled = 0
