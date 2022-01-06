@@ -48,4 +48,22 @@ public interface AccountMapper {
 
     // 查询关联菜单
     List<Menu> getRelatedMenu(int id);
+
+    // 删除角色
+    void delRole(int id);
+
+    // 删除账户角色对应关系
+    void delAccountRole(int id);
+
+    // 删除菜单
+    void delMenu(int id);
+
+    // 删除账户菜单关系
+    void delAccountMenu(int id);
+
+    // 删除账号
+    void delAccount(int id);
+
+    // 更新账号
+    void updateAccount(Account account);
 }

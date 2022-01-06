@@ -1,6 +1,7 @@
 package com.angilex.demo.service;
 
 import com.angilex.demo.entity.Account;
+import com.angilex.demo.entity.Role;
 
 import java.util.List;
 
@@ -22,5 +23,11 @@ public interface AccountService {
 
     // 查询账号及其关联角色或菜单
     Account search(int id);
+
+    // 更新账号
+    int updateAccount(Account account);
+
+    // 删除账号
+    void delAccount(int id);
 
 }

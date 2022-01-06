@@ -106,6 +106,33 @@
     </select>
 
 
+    <delete id="delRole">
+        DELETE FROM pf_role
+        WHERE id IN (SELECT role_id FROM pf_account_role WHERE account_id = #{id})
+    </delete>
+
+    <delete id="delAccountRole">
+        DELETE FROM pf_account_role
+        WHERE account_id = #{id}
+    </delete>
+
+    <delete id="delMenu">
+        DELETE FROM pf_menu
+        WHERE id IN (SELECT menu_id FROM pf_account_menu WHERE account_id = #{id})
+    </delete>
+
+    <delete id="delAccountMenu">
+        DELETE FROM pf_account_menu
+        WHERE account_id = #{Id}
+    </delete>
+
+    <delete id="delAccount">
+        DELETE FROM pf_account
+        WHERE id = #{id}
+    </delete>
+
+
+
     <update id="invalidate">
         UPDATE pf_account
         SET is_enabled = 0
@@ -115,6 +142,12 @@
     <update id="validate">
         UPDATE pf_account
         SET is_enabled = 1
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateAccount" parameterType="com.angilex.demo.entity.Account">
+        UPDATE pf_account
+        SET user_name = #{userName}, `name` = #{name}, is_enabled = #{isEnabled}, gmt_modified = NOW()
         WHERE id = #{id}
     </update>
 

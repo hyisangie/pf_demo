@@ -93,8 +93,29 @@ public class AccountServiceImpl implements AccountService {
                 }
             }
         }
+    }
+
+    @Override
+    public void delAccount(int id) {
+        // 删除关联角色
+        accountMapper.delRole(id);
+        accountMapper.delAccountRole(id);
+        // 删除关联菜单
+        accountMapper.delMenu(id);
+        accountMapper.delAccountMenu(id);
+        // 删除账户
+        accountMapper.delAccount(id);
+    }
 
 
+    @Override
+    public int updateAccount(Account account) {
+        accountMapper.delAccountMenu(account.getId());
+        accountMapper.delAccountRole(account.getId());
+        accountMapper.updateAccount(account);
+        addAccountMenu(account);
+        addAccountRole(account);
+        return 0;
     }
 
 }

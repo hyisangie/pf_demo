@@ -4,7 +4,6 @@ import com.angilex.demo.entity.Menu;
 import com.angilex.demo.entity.Role;
 import com.angilex.demo.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -51,7 +50,7 @@ public class RoleController {
         return roleService.updateRole(role);
     }
 
-    @PutMapping("del/{id}")
+    @DeleteMapping("del/{id}")
     public void delRole(@PathVariable int id){
         roleService.delRole(id);
     }

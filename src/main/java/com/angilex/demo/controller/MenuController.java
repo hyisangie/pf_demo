@@ -21,7 +21,7 @@ public class MenuController {
     @GetMapping("/getlevel1")
     public List<Menu> get1stLevel(){
         return menuService.getLevelOne();
-    };
+    }
 
     /**
      * 根据 parent_id 查询其子权限
@@ -48,12 +48,12 @@ public class MenuController {
         return menuService.searchById(id);
     }
 
-    @PostMapping(value = "/update")
+    @PutMapping("/update")
     public int updateMenu(@RequestBody Menu menu){
         return menuService.updateMenu(menu);
     }
 
-    @GetMapping("/del/{id}")
+    @DeleteMapping("/del/{id}")
     public int delRelatedMenu(@PathVariable int id){
         return menuService.delMenu(id);
     }

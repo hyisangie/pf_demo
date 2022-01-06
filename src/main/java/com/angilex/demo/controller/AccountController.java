@@ -3,7 +3,6 @@ package com.angilex.demo.controller;
 import com.angilex.demo.entity.Account;
 import com.angilex.demo.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,6 +43,24 @@ public class AccountController {
         return accountService.search(id);
     }
 
+    /**
+     * 更新账户
+     * @param account
+     * @return
+     */
+    @PutMapping("/update")
+    public int updateAccount(@RequestBody Account account) {
+        return accountService.updateAccount(account);
+    }
+
+    /**
+     * 删除账户
+     * @param id
+     */
+    @DeleteMapping("del/{id}")
+    public void delAccount(@PathVariable int id){
+        accountService.delAccount(id);
+    }
 
     /**
      * 停用账号
