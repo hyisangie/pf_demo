@@ -54,8 +54,10 @@ public class RoleServiceImpl implements RoleService {
 
     public int addRoleMenu(Role role) {
         // 添加关联，问题：：：roleid是自动生成的，那么在此时role对象里是没有id的，添加的话会变成null，如何解决？
-        // 添加到role表后可以返回主键id
-        roleMapper.relateToMenu(role);
+        // 添加到role表后可以返回主键id，不需要自己set
+        if (role.getMenus().size() > 0) {
+            roleMapper.relateToMenu(role);
+        }
         return 1;
     }
 

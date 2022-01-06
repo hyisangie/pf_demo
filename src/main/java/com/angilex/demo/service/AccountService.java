@@ -16,4 +16,7 @@ public interface AccountService {
 
     // 重设密码
     void resetPwd(int id, String oldPwd, String newPwd);
+
+    // 添加账号
+    void add(Account account);
 }

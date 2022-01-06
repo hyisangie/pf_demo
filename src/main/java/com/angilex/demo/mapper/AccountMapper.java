@@ -22,4 +22,19 @@ public interface AccountMapper {
 
     // 更新密码
     int resetPwd(int id, String newPwd);
+
+    // 添加用户
+    void add(Account account);
+
+    // 添加账户和角色的关系
+    void addAccountRole(Account account);
+
+    // 自动绑定账户和角色下菜单的关系
+    void bindRoleMenu(Account account, Integer menuId);
+
+    // 添加账户和菜单的关系
+    void addAccountMenu(Account account);
+
+    // 通过角色id获取它对应的角色菜单id
+    List<Integer> getMenuList(Integer roleId);
 }

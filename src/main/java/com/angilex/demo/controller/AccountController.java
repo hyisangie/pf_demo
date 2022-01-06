@@ -15,9 +15,23 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
+    /**
+     * 查看所有列表
+     * ※ 改造：要能根据条件显示
+     * @return
+     */
     @GetMapping("/list")
     public List<Account> getAll(){
         return accountService.getAll();
+    }
+
+    /**
+     * 添加账号信息
+     * @param account
+     */
+    @PostMapping("add")
+    public void add(@RequestBody Account account){
+        accountService.add(account);
     }
 
 

@@ -2,6 +2,7 @@ package com.angilex.demo.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class Account implements Serializable {
 
@@ -25,8 +26,30 @@ public class Account implements Serializable {
     // 修改时间
     private Date gmtModified;
 
+    // 角色列表
+    private List<Role> roles;
+
+    // 菜单列表
+    private List<Menu> menus;
 
 
+
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
+    public List<Menu> getMenus() {
+        return menus;
+    }
+
+    public void setMenus(List<Menu> menus) {
+        this.menus = menus;
+    }
 
     public Integer getId() {
         return id;
