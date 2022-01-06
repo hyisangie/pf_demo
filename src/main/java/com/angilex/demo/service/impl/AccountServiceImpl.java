@@ -37,8 +37,4 @@ public class AccountServiceImpl implements AccountService {
         accountMapper.resetPwd(id, newPwd);
 
     }
-
-    public static void main(String[] args) {
-        System.out.println("sdsa".charAt(0));
-    }
 }
