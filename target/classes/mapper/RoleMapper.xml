@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.angilex.demo.mapper.RoleMapper">
+
+    <resultMap id="BaseResultMap" type="com.angilex.demo.entity.Role">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="role_name" property="roleName" jdbcType="VARCHAR"/>
+        <result column="role_code" property="roleCode" jdbcType="VARCHAR"/>
+        <result column="is_enabled" property="isEnabled" jdbcType="TINYINT"/>
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP"/>
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP"/>
+        <collection property="menus" ofType="com.angilex.demo.entity.Menu">
+            <id column="id" property="id" jdbcType="INTEGER"/>
+            <result column="menu_code" property="menuCode" jdbcType="VARCHAR"/>
+            <result column="menu_name" property="menuName" jdbcType="VARCHAR"/>
+            <result column="menu_type" property="menuType" jdbcType="TINYINT"/>
+            <result column="url" property="url" jdbcType="VARCHAR"/>
+            <result column="parent_id" property="parentId" jdbcType="INTEGER"/>
+            <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP"/>
+            <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP"/>
+        </collection>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        id, role_name, role_code, is_enabled, gmt_create, gmt_modified
+    </sql>
+
+    <select id="getAll" resultType="com.angilex.demo.entity.Role">
+        SELECT <include refid="Base_Column_List"/>
+        FROM pf_role
+    </select>
+
+    <select id="searchById" resultType="com.angilex.demo.entity.Role">
+        <bind name="pattern" value="'%'+id+'%'"/>
+        SELECT *
+        FROM pf_role
+        WHERE id like #{pattern}
+    </select>
+
+    <select id="searchByName" resultType="com.angilex.demo.entity.Role">
+        <bind name="pattern" value="'%'+name+'%'"/>
+        SELECT *
+        FROM pf_role
+        WHERE role_name like #{pattern}
+    </select>
+
+    <select id="searchAllEnabled" resultType="com.angilex.demo.entity.Role">
+        SELECT *
+        FROM pf_role
+        WHERE is_enabled = 1;
+    </select>
+
+    <insert id="addRole"
+            useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.angilex.demo.entity.Role">
+        INSERT INTO pf_role (<include refid="Base_Column_List"/>)
+        VALUES
+        (#{id}, #{roleName}, #{roleCode}, 1, NOW(), NOW())
+    </insert>
+
+    <insert id="relateToMenu" parameterType="com.angilex.demo.entity.Role">
+        INSERT INTO pf_role_menu (role_id, menu_id, gmt_create, gmt_modified)
+        VALUES
+        <foreach collection="menus" item="menu" separator=",">
+            (#{id}, #{menu.id}, NOW(), NOW())
+        </foreach>
+
+    </insert>
+
+    <select id="getMenu" parameterType="Integer" resultType="com.angilex.demo.entity.Menu">
+    SELECT
+        m.id,
+        m.menu_code,
+        m.menu_name,
+        m.menu_type,
+        m.url,
+        m.parent_id,
+        m.gmt_create,
+        m.gmt_modified
+    FROM pf_menu m
+    WHERE m.id IN (SELECT rm.menu_id FROM pf_role_menu rm WHERE role_id = #{roleId})
+    </select>
+
+    <delete id="delMenu">
+        DELETE FROM pf_menu
+        WHERE id IN (SELECT menu_id FROM pf_role_menu WHERE role_id = #{id})
+    </delete>
+
+    <delete id="delRoleMenu">
+        DELETE FROM pf_role_menu
+        WHERE role_id = #{roleId}
+    </delete>
+
+    <delete id="delRole">
+        DELETE FROM pf_role
+        WHERE id = #{id}
+    </delete>
+
+    <update id="invalidateRole">
+        UPDATE pf_role
+        SET is_enabled = 0
+        WHERE id = #{id}
+    </update>
+
+    <update id="validateRole">
+        UPDATE pf_role
+        SET is_enabled = 1
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateRole" parameterType="com.angilex.demo.entity.Role">
+        UPDATE pf_role
+        SET role_name = #{roleName}, role_code = #{roleCode}, gmt_modified = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <select id="relatedAccounts" resultType="Integer">
+        SELECT COUNT(*)
+        FROM pf_account_role
+        WHERE role_id = #{id}
+    </select>
+
+</mapper>
