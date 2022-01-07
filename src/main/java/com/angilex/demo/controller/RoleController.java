@@ -3,6 +3,7 @@ package com.angilex.demo.controller;
 import com.angilex.demo.entity.Menu;
 import com.angilex.demo.entity.Role;
 import com.angilex.demo.service.RoleService;
+import com.angilex.demo.utils.CommonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,43 +17,51 @@ public class RoleController {
     private RoleService roleService;
 
     @GetMapping("/list")
-    public List<Role> getAll() {
-        return roleService.getAll();
+    public CommonResult<List<Role>> getAll() {
+        return CommonResult.success(roleService.getAll());
     }
 
     @GetMapping("/searchid/{id}")
-    public Role searchById(@PathVariable("id") int id) {
-        return roleService.searchById(id);
+    public CommonResult<Role> searchById(@PathVariable("id") int id) {
+        Role role = roleService.searchById(id);
+        return CommonResult.success(role);
     }
 
     @GetMapping("/searchname/{name}")
-    public List<Role> searchByName(@PathVariable("name") String name) {
-        return roleService.searchByName(name);
+    public CommonResult<List<Role>> searchByName(@PathVariable("name") String name) {
+        return CommonResult.success(roleService.searchByName(name));
     }
 
     @GetMapping("/enabled")
-    public List<Role> searchAllEnabled(){
-        return roleService.searchAllEnabled();
+    public CommonResult<List<Role>> searchAllEnabled(){
+        return CommonResult.success(roleService.searchAllEnabled());
     }
 
     @PostMapping("/add")
-    public int add(@RequestBody Role role){
-        return roleService.addRole(role);
+    public CommonResult add(@RequestBody Role role){
+        int count = roleService.addRole(role);
+        if (count > 0) return CommonResult.success(count);
+        return CommonResult.failed();
     }
 
     @GetMapping("/getmenu/{id}")
-    public List<Menu> getMenu(@PathVariable int id){
-        return roleService.getMenu(id);
+    public CommonResult<List<Menu>> getMenu(@PathVariable int id){
+        return CommonResult.success(roleService.getMenu(id));
     }
 
     @PutMapping("/update")
-    public int updateRole(@RequestBody Role role) {
-        return roleService.updateRole(role);
+    public CommonResult updateRole(@RequestBody Role role) {
+
+        int count = roleService.updateRole(role);
+        if (count > 0) return CommonResult.success(count);
+        return CommonResult.failed();
     }
 
     @DeleteMapping("del/{id}")
-    public void delRole(@PathVariable int id){
-        roleService.delRole(id);
+    public CommonResult delRole(@PathVariable int id){
+        int count = roleService.delRole(id);
+        if (count > 0) return CommonResult.success(count);
+        return CommonResult.failed();
     }
 
     /**
@@ -60,8 +69,10 @@ public class RoleController {
      * @param id
      */
     @PutMapping("invalidate/{id}")
-    public void invalidateRole(@PathVariable int id) {
-        roleService.invalidateRole(id);
+    public CommonResult invalidateRole(@PathVariable int id) {
+        int count = roleService.invalidateRole(id);
+        if (count > 0) return CommonResult.success(count);
+        return CommonResult.failed();
     }
 
     /**
@@ -69,7 +80,9 @@ public class RoleController {
      * @param id
      */
     @PutMapping("validate/{id}")
-    public void validateRole(@PathVariable int id) {
-        roleService.validateRole(id);
+    public CommonResult validateRole(@PathVariable int id) {
+        int count = roleService.validateRole(id);
+        if (count > 0) return CommonResult.success(count);
+        return CommonResult.failed();
     }
 }

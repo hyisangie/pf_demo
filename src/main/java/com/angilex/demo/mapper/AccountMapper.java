@@ -14,10 +14,10 @@ public interface AccountMapper {
     List<Account> getAll();
 
     // 停用账号
-    void invalidate(int id);
+    int invalidate(int id);
 
     // 启用账号
-    void validate(int id);
+    int validate(int id);
 
     // 查询密码是否符合
     List<Account> checkPwd(int id, String oldPwd);
@@ -26,16 +26,16 @@ public interface AccountMapper {
     int resetPwd(int id, String newPwd);
 
     // 添加用户
-    void add(Account account);
+    int add(Account account);
 
     // 添加账户和角色的关系
-    void addAccountRole(Account account);
+    int addAccountRole(Account account);
 
     // 自动绑定账户和角色下菜单的关系
-    void bindRoleMenu(Account account, Integer menuId);
+    int bindRoleMenu(Account account, Integer menuId);
 
     // 添加账户和菜单的关系
-    void addAccountMenu(Account account);
+    int addAccountMenu(Account account);
 
     // 通过角色id获取它对应的角色菜单id
     List<Integer> getMenuList(Integer roleId);
@@ -50,20 +50,20 @@ public interface AccountMapper {
     List<Menu> getRelatedMenu(int id);
 
     // 删除角色
-    void delRole(int id);
+    int delRole(int id);
 
     // 删除账户角色对应关系
-    void delAccountRole(int id);
+    int delAccountRole(int id);
 
     // 删除菜单
-    void delMenu(int id);
+    int delMenu(int id);
 
     // 删除账户菜单关系
-    void delAccountMenu(int id);
+    int delAccountMenu(int id);
 
     // 删除账号
-    void delAccount(int id);
+    int delAccount(int id);
 
     // 更新账号
-    void updateAccount(Account account);
+    int updateAccount(Account account);
 }

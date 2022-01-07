@@ -79,25 +79,25 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void delRole(int id) {
+    public int delRole(int id) {
         // 查询有无关联账号
-        if (roleMapper.relatedAccounts(id) > 0) return;
+        if (roleMapper.relatedAccounts(id) > 0) return 0;
 
         // 没有关联账号，进行删除
         // 删除关联菜单，这两条好像有点重复
-        roleMapper.delMenu(id);
-        roleMapper.delRoleMenu(id);
+        if (roleMapper.delMenu(id) == 0) return 0;
+        if (roleMapper.delRoleMenu(id) == 0) return 0;
         // 删除角色
-        roleMapper.delRole(id);
+        return roleMapper.delRole(id);
     }
 
     @Override
-    public void invalidateRole(int id) {
-        roleMapper.invalidateRole(id);
+    public int invalidateRole(int id) {
+        return roleMapper.invalidateRole(id);
     }
 
     @Override
-    public void validateRole(int id) {
-        roleMapper.validateRole(id);
+    public int validateRole(int id) {
+        return roleMapper.validateRole(id);
     }
 }

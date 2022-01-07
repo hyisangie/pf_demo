@@ -2,6 +2,7 @@ package com.angilex.demo.controller;
 
 import com.angilex.demo.entity.Account;
 import com.angilex.demo.service.AccountService;
+import com.angilex.demo.utils.CommonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,40 +18,48 @@ public class AccountController {
     /**
      * 查看所有列表
      * ※ 改造：要能根据条件显示
-     * @return
      */
     @GetMapping("/list")
-    public List<Account> getAll(){
-        return accountService.getAll();
+    public CommonResult<List<Account>> getAll(){
+
+        List<Account> accounts = accountService.getAll();
+        return CommonResult.success(accounts);
     }
 
     /**
      * 添加账号信息
-     * @param account
+     * @param account   账户信息
      */
     @PostMapping("add")
-    public void add(@RequestBody Account account){
-        accountService.add(account);
+    public CommonResult add(@RequestBody Account account){
+
+        int count = accountService.add(account);
+        if (count > 0) {
+            return CommonResult.success(count);
+        }
+        return CommonResult.failed();
     }
 
     /**
      * 查询账号
      * @param id
-     * @return
      */
     @GetMapping("search/{id}")
-    public Account search(@PathVariable int id) {
-        return accountService.search(id);
+    public CommonResult<Account> search(@PathVariable int id) {
+        Account account = accountService.search(id);
+        if (account != null) return CommonResult.success(account);
+        return CommonResult.failed();
     }
 
     /**
      * 更新账户
      * @param account
-     * @return
      */
     @PutMapping("/update")
-    public int updateAccount(@RequestBody Account account) {
-        return accountService.updateAccount(account);
+    public CommonResult updateAccount(@RequestBody Account account) {
+        int count = accountService.updateAccount(account);
+        if (count > 0) return CommonResult.success(count);
+        return CommonResult.failed();
     }
 
     /**
@@ -58,8 +67,10 @@ public class AccountController {
      * @param id
      */
     @DeleteMapping("del/{id}")
-    public void delAccount(@PathVariable int id){
-        accountService.delAccount(id);
+    public CommonResult delAccount(@PathVariable int id){
+        int count = accountService.delAccount(id);
+        if (count > 0) return CommonResult.success(count);
+        return CommonResult.failed();
     }
 
     /**
@@ -67,8 +78,11 @@ public class AccountController {
      * @param id
      */
     @PutMapping("/invalidate/{id}")
-    public void invalidateRole(@PathVariable int id) {
-        accountService.invalidateRole(id);
+    public CommonResult invalidateRole(@PathVariable int id) {
+
+        int count = accountService.invalidateRole(id);
+        if (count > 0) return CommonResult.success(count);
+        return CommonResult.failed();
     }
 
     /**
@@ -76,13 +90,17 @@ public class AccountController {
      * @param id
      */
     @PutMapping("/validate/{id}")
-    public void validateRole(@PathVariable int id) {
-        accountService.validateRole(id);
+    public CommonResult validateRole(@PathVariable int id) {
+        int count = accountService.validateRole(id);
+        if (count > 0) return CommonResult.success(count);
+        return CommonResult.failed();
     }
 
     @PutMapping("/resetpwd/{id}")
-    public void resetPwd(@PathVariable int id, String oldPwd, String newPwd){
-        accountService.resetPwd(id, oldPwd, newPwd);
+    public CommonResult resetPwd(@PathVariable int id, String oldPwd, String newPwd){
+        int count = accountService.resetPwd(id, oldPwd, newPwd);
+        if (count > 0) return CommonResult.success(count);
+        return CommonResult.failed();
     }
 
 }

@@ -2,6 +2,7 @@ package com.angilex.demo.service;
 
 import com.angilex.demo.entity.Account;
 import com.angilex.demo.entity.Role;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -10,24 +11,26 @@ public interface AccountService {
     List<Account> getAll();
 
     // 停用账号
-    void invalidateRole(int id);
+    int invalidateRole(int id);
 
     // 启用账号
-    void validateRole(int id);
+    int validateRole(int id);
 
     // 重设密码
-    void resetPwd(int id, String oldPwd, String newPwd);
+    int resetPwd(int id, String oldPwd, String newPwd);
 
     // 添加账号
-    void add(Account account);
+    @Transactional  // Transactional注解的用法？
+    int add(Account account);
 
     // 查询账号及其关联角色或菜单
     Account search(int id);
 
     // 更新账号
+    @Transactional
     int updateAccount(Account account);
 
     // 删除账号
-    void delAccount(int id);
+    int delAccount(int id);
 
 }

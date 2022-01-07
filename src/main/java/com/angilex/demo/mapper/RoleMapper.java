@@ -31,10 +31,10 @@ public interface RoleMapper {
     List<Menu> getMenu(int roleId);
 
     // 根据roleId删除menu_role中与该角色有关的关联关系
-    void delRoleMenu(Integer roleId);
+    int delRoleMenu(Integer roleId);
 
     // 更新数据库中角色
-    void updateRole(Role role);
+    int updateRole(Role role);
 
     // 查询有无关联账号
     int relatedAccounts(int id);
@@ -46,8 +46,8 @@ public interface RoleMapper {
     int delMenu(int id);
 
     // 停用角色
-    void invalidateRole(int id);
+    int invalidateRole(int id);
 
     // 启用角色
-    void validateRole(int id);
+    int validateRole(int id);
 }

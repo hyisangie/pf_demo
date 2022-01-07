@@ -22,9 +22,9 @@ public interface RoleService {
     // 更新角色
     int updateRole(Role role);
     // 删除角色
-    void delRole(int id);
+    int delRole(int id);
     // 停用角色
-    void invalidateRole(int id);
+    int invalidateRole(int id);
     // 启用角色
-    void validateRole(int id);
+    int validateRole(int id);
 }

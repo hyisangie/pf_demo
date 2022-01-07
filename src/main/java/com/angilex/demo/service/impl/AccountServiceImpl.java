@@ -22,28 +22,29 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void invalidateRole(int id) {
-        accountMapper.invalidate(id);
+    public int invalidateRole(int id) {
+
+        return accountMapper.invalidate(id);
     }
 
     @Override
-    public void validateRole(int id) {
-        accountMapper.validate(id);
+    public int validateRole(int id) {
+        return accountMapper.validate(id);
     }
 
     @Override
-    public void resetPwd(int id, String oldPwd, String newPwd) {
+    public int resetPwd(int id, String oldPwd, String newPwd) {
         // 判断原密码是否输入正确
-        if (accountMapper.checkPwd(id, oldPwd).size() == 0) return;
+        if (accountMapper.checkPwd(id, oldPwd).size() == 0) return 0;
         // 正确后才能修改密码
-        accountMapper.resetPwd(id, newPwd);
-
+        return accountMapper.resetPwd(id, newPwd);
     }
 
     @Override
-    public void add(Account account) {
+    public int add(Account account) {
+
         // 添加账户信息
-        accountMapper.add(account);
+        int count = accountMapper.add(account);
         // 添加账户和角色的关联信息
         if (account.getRoles().size() > 0) {
             addAccountRole(account);
@@ -52,6 +53,8 @@ public class AccountServiceImpl implements AccountService {
         if (account.getMenus().size() > 0) {
             addAccountMenu(account);
         }
+
+        return count;
     }
 
     @Override
@@ -96,7 +99,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void delAccount(int id) {
+    public int delAccount(int id) {
         // 删除关联角色
         accountMapper.delRole(id);
         accountMapper.delAccountRole(id);
@@ -104,7 +107,7 @@ public class AccountServiceImpl implements AccountService {
         accountMapper.delMenu(id);
         accountMapper.delAccountMenu(id);
         // 删除账户
-        accountMapper.delAccount(id);
+        return accountMapper.delAccount(id);
     }
 
 
@@ -112,10 +115,10 @@ public class AccountServiceImpl implements AccountService {
     public int updateAccount(Account account) {
         accountMapper.delAccountMenu(account.getId());
         accountMapper.delAccountRole(account.getId());
-        accountMapper.updateAccount(account);
+        int count = accountMapper.updateAccount(account);
         addAccountMenu(account);
         addAccountRole(account);
-        return 0;
+        return count;
     }
 
 }

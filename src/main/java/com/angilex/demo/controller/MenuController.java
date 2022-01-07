@@ -2,6 +2,7 @@ package com.angilex.demo.controller;
 
 import com.angilex.demo.entity.Menu;
 import com.angilex.demo.service.MenuService;
+import com.angilex.demo.utils.CommonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +20,10 @@ public class MenuController {
      * @return 所有一级菜单
      */
     @GetMapping("/getlevel1")
-    public List<Menu> get1stLevel(){
-        return menuService.getLevelOne();
+    public CommonResult<List<Menu>> get1stLevel(){
+        List<Menu> menu = menuService.getLevelOne();
+        if (menu.size() > 0) return CommonResult.success(menu);
+        return CommonResult.failed("没有相关数据！");
     }
 
     /**
@@ -29,33 +32,43 @@ public class MenuController {
      * @return 子权限列表
      */
     @GetMapping("/getsublevel/{level}")
-    public List<Menu> getSubLevel(@PathVariable("level") int level){
-        return menuService.getSubLevel(level);
+    public CommonResult<List<Menu>> getSubLevel(@PathVariable("level") int level){
+        List<Menu> menu = menuService.getSubLevel(level);
+        if (menu.size() > 0) return CommonResult.success(menu);
+        return CommonResult.failed("没有相关数据！");
     }
 
     /**
      * 添加菜单
-     * @param menu
+     * @param menu 菜单信息
      * @return
      */
     @PostMapping("/add")
-    public int addMenu(@RequestBody Menu menu){
-        return menuService.addMenu(menu);
+    public CommonResult addMenu(@RequestBody Menu menu){
+        int count = menuService.addMenu(menu);
+        if (count > 0) return CommonResult.success(count);
+        return CommonResult.failed();
     }
 
     @GetMapping("/get/{id}")
-    public Menu searchById(@PathVariable("id") int id){
-        return menuService.searchById(id);
+    public CommonResult<Menu> searchById(@PathVariable("id") int id){
+        Menu menu = menuService.searchById(id);
+        if (menu != null) return CommonResult.success(menu);
+        return CommonResult.failed();
     }
 
     @PutMapping("/update")
-    public int updateMenu(@RequestBody Menu menu){
-        return menuService.updateMenu(menu);
+    public CommonResult updateMenu(@RequestBody Menu menu){
+        int count = menuService.updateMenu(menu);
+        if (count > 0) return CommonResult.success(count);
+        return CommonResult.failed();
     }
 
     @DeleteMapping("/del/{id}")
-    public int delRelatedMenu(@PathVariable int id){
-        return menuService.delMenu(id);
+    public CommonResult delRelatedMenu(@PathVariable int id){
+        int count = menuService.delMenu(id);
+        if (count > 0) return CommonResult.success(count);
+        return CommonResult.failed();
     }
 
 }
