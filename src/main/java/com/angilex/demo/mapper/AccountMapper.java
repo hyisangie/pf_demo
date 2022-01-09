@@ -4,6 +4,7 @@ import com.angilex.demo.entity.Account;
 import com.angilex.demo.entity.Menu;
 import com.angilex.demo.entity.Role;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

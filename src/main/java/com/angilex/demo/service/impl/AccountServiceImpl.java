@@ -65,9 +65,7 @@ public class AccountServiceImpl implements AccountService {
         if (accounts.size() > 0) {
             account = accounts.get(0);
             // 查询关联角色
-            List<Role> relatedRole = accountMapper.getRelatedRole(id);
-            System.out.println(relatedRole);
-            account.setRoles(relatedRole);
+            account.setRoles(accountMapper.getRelatedRole(id));
             // 查询关联菜单
             account.setMenus(accountMapper.getRelatedMenu(id));
         }

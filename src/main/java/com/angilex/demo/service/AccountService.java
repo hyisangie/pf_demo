@@ -20,7 +20,7 @@ public interface AccountService {
     int resetPwd(int id, String oldPwd, String newPwd);
 
     // 添加账号
-    @Transactional  // Transactional注解的用法？
+    @Transactional
     int add(Account account);
 
     // 查询账号及其关联角色或菜单
@@ -31,6 +31,7 @@ public interface AccountService {
     int updateAccount(Account account);
 
     // 删除账号
+    @Transactional
     int delAccount(int id);
 
 }
